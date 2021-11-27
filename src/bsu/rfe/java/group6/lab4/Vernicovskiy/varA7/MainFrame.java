@@ -12,6 +12,14 @@ public class MainFrame extends JFrame {
         Toolkit kit = Toolkit.getDefaultToolkit(); // отцентровка
         setLocation((kit.getScreenSize().width - WIDTH) / 2,
                 (kit.getScreenSize().height - HEIGHT) / 2);
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu filemenu = new JMenu("Файл");
+        menuBar.add(filemenu);
+        JMenu graphicsMenu = new JMenu("Открыть файл");
+        menuBar.add(graphicsMenu);
+
+
 
     }
      public static void main(String args[]){
