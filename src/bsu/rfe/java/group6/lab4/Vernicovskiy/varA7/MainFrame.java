@@ -2,6 +2,8 @@ package bsu.rfe.java.group6.lab4.Vernicovskiy.varA7;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 
 public class MainFrame extends JFrame {
     private static final int WIDTH = 1000;
@@ -14,8 +16,23 @@ public class MainFrame extends JFrame {
                 (kit.getScreenSize().height - HEIGHT) / 2);
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        JMenu filemenu = new JMenu("Файл");
-        menuBar.add(filemenu);
+        JMenu fileMenu = new JMenu("Файл");
+        menuBar.add(fileMenu);
+        Action openGraphicsAction = new AbstractAction("Открыть файл") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File("."));
+                fileChooser.setDialogTitle("Our Directory");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                if(fileChooser.showOpenDialog(MainFrame.this) /*Функция открытия диалогового окна «Открыть файл*/ == JFileChooser.APPROVE_OPTION){
+
+
+                }
+
+            }
+        };
+        fileMenu.add(openGraphicsAction);
         JMenu graphicsMenu = new JMenu("Открыть файл");
         menuBar.add(graphicsMenu);
 
