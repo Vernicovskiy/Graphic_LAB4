@@ -3,7 +3,8 @@ package bsu.rfe.java.group6.lab4.Vernicovskiy.varA7;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.io.*;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
     private static final int WIDTH = 1000;
@@ -11,6 +12,9 @@ public class MainFrame extends JFrame {
     private JCheckBoxMenuItem showAxisMenuItem;
     private JCheckBoxMenuItem showMarkersMenuItem;
     private GraphicsDisplay display = new GraphicsDisplay();
+    private boolean fileLoaded = false;
+    private JMenuItem showTurnLeftMenuItem;
+    private JMenuItem showTurnRightMenuItem;
 
     public  MainFrame(){
         super("Построение графиков функции на основе заранее подготовленных файлов");
@@ -28,8 +32,9 @@ public class MainFrame extends JFrame {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(new File("."));
                 fileChooser.setDialogTitle("Our Directory");
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 if(fileChooser.showOpenDialog(MainFrame.this) /*Функция открытия диалогового окна «Открыть файл*/ == JFileChooser.APPROVE_OPTION){
+                    openGraphics(fileChooser.getSelectedFile());
 
 
                 }
@@ -66,6 +71,11 @@ public class MainFrame extends JFrame {
 
 
 
+
+
+
+
+
     }
      public static void main(String args[]){
         MainFrame frame = new MainFrame();
@@ -74,4 +84,53 @@ public class MainFrame extends JFrame {
 
 
      }
+    protected void openGraphics (File selectedFile) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+            ArrayList<String> strings = new ArrayList<String>();
+
+            while (reader.ready()) {
+                strings.add(reader.readLine());
+            }
+
+            Double[][] graphicsData = new Double[strings.size()][2];
+            boolean[] pointsCon = new boolean[graphicsData.length];
+
+            for (int i = 0; i < strings.size(); i++) {
+                String[] str = strings.get(i).split(" ");
+                for (int j = 0; j < str.length; j++) {
+                    String s = str[j];
+                    if (j == 1) {
+                        str[j] = str[j].replace(".", "");
+                        boolean f = true;
+                        for (int h = 0; h < str[j].length() - 1; h++) {
+                            if (str[j].charAt(h) > str[j].charAt(h + 1)) {
+                                f = false;
+                                break;
+                            }
+                        }
+                        pointsCon[i] = f;
+                    }
+                    graphicsData[i][j] = Double.valueOf(s);
+                }
+            }
+
+            if (graphicsData != null && graphicsData.length > 0) {
+                fileLoaded = true;
+                display.showGraphics(graphicsData);
+                showTurnLeftMenuItem.setEnabled(true);
+                showTurnRightMenuItem.setEnabled(true);
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(MainFrame.this, "Указанный файл не найден",
+                    "Ошибка загрузки данных", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(MainFrame.this, "Ошибка чтеничя координа точек из файла",
+                    "Ошибка загрузки данных", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    }
+
 }

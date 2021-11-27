@@ -34,7 +34,7 @@ public class GraphicsDisplay extends JPanel {
 
         axisFont = new Font("Serif", Font.BOLD, 36);
     }
-    public void ShowGraphics(Double[][] graphicsData){
+    public void showGraphics(Double[][] graphicsData){
         this.graphicsData = graphicsData;
         repaint();
     }
