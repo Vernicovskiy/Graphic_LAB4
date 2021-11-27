@@ -8,6 +8,10 @@ import java.io.File;
 public class MainFrame extends JFrame {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 600;
+    private JCheckBoxMenuItem showAxisMenuItem;
+    private JCheckBoxMenuItem showMarkersMenuItem;
+    private GraphicsDisplay display = new GraphicsDisplay();
+
     public  MainFrame(){
         super("Построение графиков функции на основе заранее подготовленных файлов");
         setSize(WIDTH,HEIGHT);
@@ -36,6 +40,27 @@ public class MainFrame extends JFrame {
 
         JMenu graphicsMenu = new JMenu("График");
         menuBar.add(graphicsMenu);
+
+        Action showAxisAction = new AbstractAction("Показывать оси координат") {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                display.setShowAxis(showAxisMenuItem.isSelected());
+            }
+        };
+        showAxisMenuItem = new JCheckBoxMenuItem(showAxisAction);
+        graphicsMenu.add(showAxisMenuItem);
+        showAxisMenuItem.setSelected(true);
+        Action showMarkerAction = new AbstractAction("Показывать маркеры точек") {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                display.setShowMarkers(showMarkersMenuItem.isSelected());
+            }
+        };
+        showMarkersMenuItem = new JCheckBoxMenuItem(showMarkerAction);
+        graphicsMenu.add(showMarkersMenuItem);
+        showMarkersMenuItem.setSelected(true);
+
+
 
 
 
