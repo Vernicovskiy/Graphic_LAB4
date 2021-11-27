@@ -3,10 +3,7 @@ package bsu.rfe.java.group6.lab4.Vernicovskiy.varA7;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 
 public class GraphicsDisplay extends JPanel {
     // Basic Stroke класс для задания типа линий
@@ -54,6 +51,7 @@ public class GraphicsDisplay extends JPanel {
         double deltaX = x - minX;
         double deltaY = maxY - y;
         return new Point2D.Double(deltaX * scale, deltaY * scale);
+
     }
     protected Point2D.Double shiftPoint(Point2D.Double src, double deltaX, double deltaY) {
         Point2D.Double dest = new Point2D.Double();
@@ -75,6 +73,8 @@ public class GraphicsDisplay extends JPanel {
         }
         canvas.draw(graphics);
     }
+
+
     protected void paintAxis(Graphics2D canvas) {
         canvas.setStroke(axisStroke);
         canvas.setColor(Color.BLACK);
@@ -126,6 +126,92 @@ public class GraphicsDisplay extends JPanel {
         }
 
     }
+    protected void paintMarkers(Graphics2D canvas) {
+// Шаг 1 - Установить специальное перо для черчения контуров
+
+        canvas.setStroke(markerStroke);
+// Выбрать красный цвета для контуров маркеров
+        canvas.setColor(Color.RED);
+// Выбрать красный цвет для закрашивания маркеров внутри
+        canvas.setPaint(Color.RED);
+// Шаг 2 - Организовать цикл по всем точкам графика
+        for (Double[] point: graphicsData) {
+// Инициализировать эллипс как объект для представления
+
+            Ellipse2D.Double marker = new Ellipse2D.Double();
+/* Эллипс будет задаваться посредством указания координат
+его центра
+и угла прямоугольника, в который он вписан */
+// Центр - в точке (x,y)
+            Point2D.Double center = xyToPoint(point[0], point[1]);
+// Угол прямоугольника - отстоит на расстоянии (3,3)
+            Point2D.Double corner = shiftPoint(center, 3, 3);
+// Задать эллипс по центру и диагонали
+            marker.setFrameFromCenter(center, corner);
+            canvas.draw(marker); // Начертить контур маркера
+            canvas.fill(marker); // Залить внутреннюю область маркера
+        }
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if (graphicsData == null || graphicsData.length == 0) return;
+
+        minX = graphicsData[0][0];
+        maxX = graphicsData[graphicsData.length - 1][0];
+        minY = graphicsData[0][1];
+        maxY = minY;
+
+        for (int i = 1; i < graphicsData.length; i++) {
+            if (graphicsData[i][1] < minY) {
+                minY = graphicsData[i][1];
+            }
+            if (graphicsData[i][1] > maxY) {
+                maxY = graphicsData[i][1];
+            }
+        }
+
+        double scaleX = getSize().getWidth() / (maxX - minX);
+        double scaleY = getSize().getHeight() / (maxY - minY);
+
+        scale = Math.min(scaleX, scaleY);
+
+        if (scale == scaleX) {
+            double yIncrement = (getSize().getHeight() / scale - (maxY - minY)) / 2;
+            maxY += yIncrement;
+            minY -= yIncrement;
+        }
+        if (scale == scaleY) {
+            double xIncrement = (getSize().getWidth() / scale - (maxX - minX)) / 2;
+            maxX += xIncrement;
+            minX -= xIncrement;
+        }
+
+        Graphics2D canvas = (Graphics2D) g;
+        Stroke oldStroke = canvas.getStroke();
+        Color oldColor = canvas.getColor();
+        Paint oldPaint = canvas.getPaint();
+        Font oldFont = canvas.getFont();
+
+
+
+        if (showAxis) paintAxis(canvas);
+
+        paintGraphics(canvas);
+
+        if (showMarkers) paintMarkers(canvas);
+
+
+
+
+        canvas.setFont(oldFont);
+        canvas.setPaint(oldPaint);
+        canvas.setColor(oldColor);
+        canvas.setStroke(oldStroke);
+    }
+
+
 
 
 
