@@ -138,7 +138,7 @@ public class GraphicsDisplay extends JPanel {
         for (Double[] point: graphicsData) {
 // Инициализировать эллипс как объект для представления
 
-            Ellipse2D.Double marker = new Ellipse2D.Double();
+            Rectangle2D.Double marker = new Rectangle2D.Double();
 /* Эллипс будет задаваться посредством указания координат
 его центра
 и угла прямоугольника, в который он вписан */

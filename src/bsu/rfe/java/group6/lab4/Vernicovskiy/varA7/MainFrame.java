@@ -1,6 +1,8 @@
 package bsu.rfe.java.group6.lab4.Vernicovskiy.varA7;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
@@ -65,6 +67,9 @@ public class MainFrame extends JFrame {
         showMarkersMenuItem = new JCheckBoxMenuItem(showMarkerAction);
         graphicsMenu.add(showMarkersMenuItem);
         showMarkersMenuItem.setSelected(true);
+        graphicsMenu.addMenuListener(new GraphicsMenuListener());
+
+        getContentPane().add(display, BorderLayout.CENTER);
 
 
 
@@ -132,5 +137,19 @@ public class MainFrame extends JFrame {
             return;
         }
     }
+    private class GraphicsMenuListener implements MenuListener {
+        public void menuSelected(MenuEvent e) {
+            showAxisMenuItem.setEnabled(fileLoaded);
+            showMarkersMenuItem.setEnabled(fileLoaded);
+        }
 
+        public void menuDeselected(MenuEvent e) {
+        }
+
+        public void menuCanceled(MenuEvent e) {
+        }
+    }
 }
+
+
+
