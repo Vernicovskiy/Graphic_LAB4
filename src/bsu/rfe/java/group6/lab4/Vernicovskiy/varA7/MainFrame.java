@@ -50,6 +50,7 @@ public class MainFrame extends JFrame {
         showAxisMenuItem = new JCheckBoxMenuItem(showAxisAction);
         graphicsMenu.add(showAxisMenuItem);
         showAxisMenuItem.setSelected(true);
+
         Action showMarkerAction = new AbstractAction("Показывать маркеры точек") {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -59,6 +60,7 @@ public class MainFrame extends JFrame {
         showMarkersMenuItem = new JCheckBoxMenuItem(showMarkerAction);
         graphicsMenu.add(showMarkersMenuItem);
         showMarkersMenuItem.setSelected(true);
+
 
 
 
