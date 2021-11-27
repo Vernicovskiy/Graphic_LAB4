@@ -10,6 +10,9 @@ public class GraphicsDisplay extends JPanel {
     private  BasicStroke axisStroke; // Тип пера для черчения осей координат
     private  BasicStroke markerStroke; // Тип пера для черчения контуров маркеров
     private Font axisFont; //Шрифт для вывода подписей осей координат
+    private Double[][] graphicsData;
+    private boolean showAxis = true;
+    private boolean showMarkers = true;
 
     public GraphicsDisplay() {
         setBackground(Color.WHITE);
@@ -23,4 +26,18 @@ public class GraphicsDisplay extends JPanel {
 
         axisFont = new Font("Serif", Font.BOLD, 36);
     }
+    public void ShowGraphics(Double[][] graphicsData){
+        this.graphicsData = graphicsData;
+        repaint();
+    }
+    public void setShowAxis(boolean showAxis) {
+        this.showAxis = showAxis;
+        repaint();
+    }
+
+    public void setShowMarkers(boolean showMarkers) {
+        this.showMarkers = showMarkers;
+        repaint();
+    }
 }
+
